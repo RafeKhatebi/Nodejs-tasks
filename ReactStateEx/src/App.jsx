@@ -1,54 +1,19 @@
-import React from "react"
-import avatar from "./images/user.png"
-import starFilled from "./images/star-filled.png"
-import starEmpty from "./images/star-empty.png"
+import Dashboard from "./components/Dashboard";
+import Loading from "./components/Loading";
 
 export default function App() {
-  const [contact, setContact] = React.useState({
-    firstName: "John",
-    lastName: "Doe",
-    phone: "+1 (212) 555-1212",
-    email: "admin@gmail.com",
-    isFavorite: false
-  })
-
-  let starIcon = contact.isFavorite ? starFilled : starEmpty
-
-  function toggleFavorite() {
-    setContact(prevContact => ({
-      ...prevContact,
-      isFavorite: !prevContact.isFavorite
-    }))
+  // Dynamic component rendering based on loading state
+  const isLoading = false; // Change this to true to see the loading state
+  function renderContent() {
+    if (isLoading) {
+      return <Loading />;
+    } else {
+      return <Dashboard />;
+    }
   }
-
   return (
-    <main>
-      <article className="card">
-        <img
-          src={avatar}
-          className="avatar"
-          alt="User profile picture of John Doe"
-        />
-        <div className="info">
-          <button
-            onClick={toggleFavorite}
-            aria-pressed={contact.isFavorite}
-            className="favorite-button"
-          >
-            <img
-              src={starIcon}
-              alt="favorite star icon"
-              className="favorite"
-            />
-          </button>
-          <h2 className="name">
-            {contact.firstName} {contact.lastName}
-          </h2>
-          <p className="contact">{contact.phone}</p>
-          <p className="contact">{contact.email}</p>
-        </div>
-
-      </article>
-    </main>
-  )
+    <div>
+      {renderContent()}
+    </div>
+  );
 }
