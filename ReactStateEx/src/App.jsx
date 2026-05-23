@@ -1,15 +1,38 @@
 import { useState } from "react"
-export default function App() {
-  const [isGoingOut, setIsGoingOut] = useState(false);
-  function changeMind() {
-    setIsGoingOut(prev => !prev)
+
+export default function Main() {
+
+  const [newItem, setNewItem] = useState([]);
+  const ingredients = ["Chicken", "Oregano", "Tomatoes"]
+
+  const ingredientsListItems = ingredients.map(ingredient => (
+    <li key={ingredient}>{ingredient}</li>
+  ))
+
+  function handleSubmit(event) {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+    const newIngredient = formData.get("ingredient")
+    setNewItem([...newItem, newIngredient])
   }
+
   return (
-    <div className="container">
-      <label htmlFor="">Current answer is ${isGoingOut ? "Yes" : "No"}. Click to change it. </label>
-      <button className="value"
-        onClick={changeMind}>{isGoingOut ? "yes" : "No"}
-      </button>
-    </div >
+    <main>
+      <form onSubmit={handleSubmit} className="add-ingredient-form">
+        <input
+          type="text"
+          placeholder="e.g. oregano"
+          aria-label="Add ingredient"
+          name="ingredient"
+        />
+        <button>Add ingredient</button>
+      </form>
+      <ul>
+        {ingredientsListItems}
+        {newItem.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    </main>
   )
 }
