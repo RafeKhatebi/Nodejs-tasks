@@ -1,38 +1,54 @@
-import { useState } from "react"
+import React from "react"
+import avatar from "./images/user.png"
+import starFilled from "./images/star-filled.png"
+import starEmpty from "./images/star-empty.png"
 
-export default function Main() {
+export default function App() {
+  const [contact, setContact] = React.useState({
+    firstName: "John",
+    lastName: "Doe",
+    phone: "+1 (212) 555-1212",
+    email: "admin@gmail.com",
+    isFavorite: false
+  })
 
-  const [newItem, setNewItem] = useState([]);
-  const ingredients = ["Chicken", "Oregano", "Tomatoes"]
+  let starIcon = contact.isFavorite ? starFilled : starEmpty
 
-  const ingredientsListItems = ingredients.map(ingredient => (
-    <li key={ingredient}>{ingredient}</li>
-  ))
-
-  function handleSubmit(event) {
-    event.preventDefault()
-    const formData = new FormData(event.currentTarget)
-    const newIngredient = formData.get("ingredient")
-    setNewItem([...newItem, newIngredient])
+  function toggleFavorite() {
+    setContact(prevContact => ({
+      ...prevContact,
+      isFavorite: !prevContact.isFavorite
+    }))
   }
 
   return (
     <main>
-      <form onSubmit={handleSubmit} className="add-ingredient-form">
-        <input
-          type="text"
-          placeholder="e.g. oregano"
-          aria-label="Add ingredient"
-          name="ingredient"
+      <article className="card">
+        <img
+          src={avatar}
+          className="avatar"
+          alt="User profile picture of John Doe"
         />
-        <button>Add ingredient</button>
-      </form>
-      <ul>
-        {ingredientsListItems}
-        {newItem.map((item) => (
-          <li key={item}>{item}</li>
-        ))}
-      </ul>
+        <div className="info">
+          <button
+            onClick={toggleFavorite}
+            aria-pressed={contact.isFavorite}
+            className="favorite-button"
+          >
+            <img
+              src={starIcon}
+              alt="favorite star icon"
+              className="favorite"
+            />
+          </button>
+          <h2 className="name">
+            {contact.firstName} {contact.lastName}
+          </h2>
+          <p className="contact">{contact.phone}</p>
+          <p className="contact">{contact.email}</p>
+        </div>
+
+      </article>
     </main>
   )
 }
